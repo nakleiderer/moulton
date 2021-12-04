@@ -22,7 +22,7 @@
 :root {
   --color-foreground: hsl(0, 0%, 100%);
   --color-background: hsl(0, 0%, 1%);
-  --color-links: hsl(213, 100%, 52%);
+  --color-links: hsl(353, 100%, 65%);
   --color-links-hover: hsl(213, 100%, 43%);
   --color-border: hsl(0, 0%, 82%);
   --font-header: MoultonDisplay;
@@ -45,7 +45,7 @@ html {
 }
 
 :focus {
-  outline: var(--color-links) solid 1px;
+  outline: hsl(213 78% 56% / 0.66) solid 1px;
   outline-offset: 2px;
 }
 
