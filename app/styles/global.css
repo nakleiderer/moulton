@@ -105,14 +105,24 @@ h2 {
 }
 
 .remix-link {
-  display: inline-flex;
+  display: flex;
+  align-items: center;
+  gap: 0.33ch;
   margin: 0 0.4rem 0 0.8rem;
   height: 1.2em;
+  color: hsl(0 0% 100% / 0.7);
+  transition: color 0.2s ease-in-out;
 }
 
 .remix-link svg {
   height: 100%;
   color: hsl(213 78% 56%);
+  transition: color 0.2s ease-in-out;
+}
+
+.remix-link:hover {
+  color: hsl(0 0% 100%);
+  text-decoration: none;
 }
 
 .remix-link:hover svg {

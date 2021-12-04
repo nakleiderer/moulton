@@ -23,8 +23,9 @@ export default function Index() {
           A{" "}
           <a href="https://remix.run" className="remix-link">
             <RemixLogo />
+            Remix
           </a>
-          Remix Newsletter
+          Newsletter
         </h2>
         <form method="post" className="subscribe-form">
           <input
