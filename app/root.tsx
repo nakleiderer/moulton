@@ -12,13 +12,30 @@ import type { LinksFunction } from "remix";
 
 import globalStylesUrl from "~/styles/global.css";
 
-// https://remix.run/api/app#links
-export let links: LinksFunction = () => {
-  return [{ rel: "stylesheet", href: globalStylesUrl }];
+export const links: LinksFunction = () => {
+  return [
+    {
+      rel: "preload",
+      href: "/fonts/poppins-bold.woff2",
+      as: "font",
+      crossOrigin: "anonymous",
+    },
+    {
+      rel: "preload",
+      href: "/fonts/inter-regular.woff2",
+      as: "font",
+      crossOrigin: "anonymous",
+    },
+    {
+      rel: "preload",
+      href: "/fonts/inter-bold.woff2",
+      as: "font",
+      crossOrigin: "anonymous",
+    },
+    { rel: "stylesheet", href: globalStylesUrl },
+  ];
 };
 
-// https://remix.run/api/conventions#default-export
-// https://remix.run/api/conventions#route-filenames
 export default function App() {
   return (
     <Document>
@@ -27,7 +44,6 @@ export default function App() {
   );
 }
 
-// https://remix.run/docs/en/v1/api/conventions#errorboundary
 export function ErrorBoundary({ error }: { error: Error }) {
   console.error(error);
   return (
@@ -45,7 +61,6 @@ export function ErrorBoundary({ error }: { error: Error }) {
   );
 }
 
-// https://remix.run/docs/en/v1/api/conventions#catchboundary
 export function CatchBoundary() {
   let caught = useCatch();
 

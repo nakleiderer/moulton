@@ -1,15 +1,32 @@
-/*
- * You can just delete everything here or keep whatever you like, it's just a
- * quick baseline!
- */
+@font-face {
+  font-family: MoultonDisplay;
+  src: url(/fonts/poppins-bold.woff2) format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: MoultonSans;
+  src: url(/fonts/inter-regular.woff2) format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: MoultonSans;
+  src: url(/fonts/inter-bold.woff2) format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+
 :root {
   --color-foreground: hsl(0, 0%, 100%);
   --color-background: hsl(0, 0%, 1%);
   --color-links: hsl(213, 100%, 52%);
   --color-links-hover: hsl(213, 100%, 43%);
   --color-border: hsl(0, 0%, 82%);
-  --font-header: Sentinel;
-  --font-body: Inter, -apple-system, "Segoe UI", Helvetica Neue, Helvetica,
+  --font-header: MoultonDisplay;
+  --font-body: MoultonSans, -apple-system, "Segoe UI", Helvetica Neue, Helvetica,
     Roboto, Arial, sans-serif, system-ui, "Apple Color Emoji", "Segoe UI Emoji";
 }
 
@@ -84,12 +101,22 @@ h2 {
   font-weight: 400;
   font-size: 1.5rem;
   color: hsl(0 0% 100% / 0.4);
-  margin: 0.5rem 0 0;
+  margin: 0.75rem 0 0;
 }
 
-h2 svg {
+.remix-link {
+  display: inline-flex;
+  margin: 0 0.4rem 0 0.8rem;
   height: 1.2em;
-  margin: 0 0.5rem 0 1rem;
+}
+
+.remix-link svg {
+  height: 100%;
+  color: hsl(213 78% 56%);
+}
+
+.remix-link:hover svg {
+  color: hsl(213 88% 66%);
 }
 
 .subscribe-form {
@@ -114,14 +141,15 @@ h2 svg {
   padding: 1.5rem;
   width: 50ch;
   color: var(--color-foreground);
+  font-family: var(--font-body);
 }
 
 .subscribe-form input::placeholder {
   background: linear-gradient(
     to bottom,
-    hsl(0 0% 100% / 0.33),
-    hsl(29 49% 72% / 0.33),
-    hsl(78 62% 50% / 0.33)
+    hsl(0 0% 100% / 0.4),
+    hsl(29 49% 72% / 0.4),
+    hsl(78 62% 50% / 0.4)
   );
   background-clip: text;
   -webkit-background-clip: text;
@@ -147,6 +175,8 @@ h2 svg {
   cursor: pointer;
   filter: hue-rotate(0deg);
   animation: 1.5s linear infinite paused hueShift;
+  font-family: var(--font-body);
+  font-weight: 700;
 }
 
 .subscribe-form button:hover {
