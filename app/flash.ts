@@ -6,6 +6,7 @@ const { getSession, commitSession } = createCookieSessionStorage({
     name: "__session",
     httpOnly: true,
     secure: true,
+    secrets: ["wagmi"],
   },
 });
 
