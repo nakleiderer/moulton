@@ -1,5 +1,14 @@
 import * as React from "react";
-import type { MetaFunction } from "remix";
+import {
+  Form,
+  useTransition,
+  useActionData,
+  useLoaderData,
+  redirect,
+  json,
+} from "remix";
+import type { MetaFunction, ActionFunction, LoaderFunction } from "remix";
+import { setFlash, getFlash } from "~/flash";
 
 export const meta: MetaFunction = () => {
   return {
@@ -8,13 +17,39 @@ export const meta: MetaFunction = () => {
   };
 };
 
-export default function Index() {
-  const inputRef = React.useRef<HTMLInputElement>(null);
-  React.useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus();
+export let loader: LoaderFunction = async ({ request }) => {
+  const [success, headers] = await getFlash(request, "success");
+  return json({ isSuccess: success }, { headers });
+};
+
+export let action: ActionFunction = async ({ request }) => {
+  const response = await fetch(
+    "https://buttondown.email/api/emails/embed-subscribe/marbiano",
+    {
+      body: await formDataAsQueryString(request),
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
     }
-  }, []);
+  );
+
+  if (response.status >= 400) {
+    // deal with error
+    console.log("response", response);
+    return { error: true };
+  }
+
+  const headers = await setFlash(request, "success");
+  return redirect("/", { headers });
+};
+
+export default function Index() {
+  const { formState, formRef } = useInteractiveForm();
+  const inputRef = useFocusedInput();
+  const { isSuccess } = useLoaderData();
+  const { isSubmitting, isError } = formState;
+
   return (
     <section className="container">
       <main>
@@ -27,16 +62,29 @@ export default function Index() {
           </a>
           Newsletter
         </h2>
-        <form method="post" className="subscribe-form">
-          <input
-            type="email"
-            placeholder="Your email to receive Remix news every Monday"
-            ref={inputRef}
-          />
-          <button type="submit">
-            <span>Subscribe</span>
-          </button>
-        </form>
+        {isSuccess ? (
+          <div className="success">
+            Thanks for subscribing, check your inbox to confirm!
+          </div>
+        ) : (
+          <Form method="post" className="subscribe-form" ref={formRef}>
+            <input
+              name="email"
+              type="email"
+              placeholder="Your email to receive Remix news every Monday"
+              required
+              ref={inputRef}
+            />
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className={isSubmitting ? "is-submitting" : ""}
+            >
+              <span>{isSubmitting ? "Subscribing" : "Subscribe"}</span>
+            </button>
+            {isError && <div className="error">Something wrong happened.</div>}
+          </Form>
+        )}
       </main>
       <aside className="disco">
         <span className="dot"></span>
@@ -58,4 +106,38 @@ function RemixLogo() {
       />
     </svg>
   );
+}
+
+function useFocusedInput() {
+  const inputRef = React.useRef<HTMLInputElement>(null);
+
+  React.useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
+
+  return inputRef;
+}
+
+function useInteractiveForm() {
+  const formRef = React.useRef<HTMLFormElement>(null);
+  const actionData = useActionData();
+  const transition = useTransition();
+
+  const isSubmitting = transition.state === "submitting";
+  const isSubmitted = ["loading", "idle"].includes(transition.state);
+  const isError = isSubmitted && actionData?.error;
+
+  return { formState: { isSubmitting, isError }, formRef };
+}
+
+async function formDataAsQueryString(request: Request) {
+  const formData = await request.formData();
+  const convertedFormData = Array.from(formData, ([key, value]) => [
+    key,
+    typeof value === "string" ? value : value.name,
+  ]);
+
+  return new URLSearchParams(convertedFormData).toString();
 }

@@ -76,11 +76,12 @@ a:hover {
 
 .container {
   height: 100vh;
-  margin-left: 8rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 3rem 0 6rem;
+  padding: 3rem 2rem 6rem;
+  max-width: 36rem;
+  margin: 0 auto;
 }
 
 aside {
@@ -130,8 +131,6 @@ h2 {
 }
 
 .subscribe-form {
-  display: flex;
-  align-items: stretch;
   margin-top: 4rem;
 }
 
@@ -149,9 +148,11 @@ h2 {
   border: 1px solid transparent;
   font-size: 1.2rem;
   padding: 1.5rem;
-  width: 50ch;
   color: var(--color-foreground);
   font-family: var(--font-body);
+  display: block;
+  width: 100%;
+  max-width: 36rem;
 }
 
 .subscribe-form input::placeholder {
@@ -181,15 +182,23 @@ h2 {
   font-size: 1.2rem;
   padding: 1rem 1.5rem;
   color: var(--color-foreground);
-  margin-left: 1rem;
   cursor: pointer;
   filter: hue-rotate(0deg);
   animation: 1.5s linear infinite paused hueShift;
   font-family: var(--font-body);
   font-weight: 700;
+  display: block;
+  width: 100%;
+  max-width: 36rem;
+  margin-top: 1rem;
 }
 
 .subscribe-form button:hover {
+  animation-play-state: running;
+}
+
+.subscribe-form button.is-submitting,
+.subscribe-form button.is-submitting:hover {
   animation-play-state: running;
 }
 
@@ -271,6 +280,19 @@ h2 {
 
 .disco:hover .dot {
   animation-play-state: paused;
+}
+
+.success {
+  color: #8fc456;
+  font-size: 1.2rem;
+  margin-top: 4rem;
+  line-height: 3.9;
+}
+
+.error {
+  color: #e12f05;
+  align-self: center;
+  margin-left: 1.5rem;
 }
 
 @keyframes hueShift {
@@ -519,5 +541,30 @@ h2 {
       250px 50px 0 0 #ff9e9d, 250px 75px 0 0 #ff8c00, 250px 100px 0 0 #3fb8af,
       250px 125px 0 0 #bedb39, 250px 150px 0 0 #d90000, 250px 175px 0 0 #ff9e9d,
       250px 200px 0 0 #ffe11a, 250px 225px 0 0 #1f8a70, 250px 250px 0 0 #fd7400;
+  }
+}
+
+@media screen and (min-width: 54rem) {
+  .container {
+    max-width: 85vw;
+  }
+
+  .subscribe-form {
+    display: flex;
+    align-items: stretch;
+  }
+
+  .subscribe-form button {
+    margin-left: 1rem;
+    margin-top: 0;
+    width: auto;
+  }
+}
+
+@media screen and (min-width: 60em) {
+  .container {
+    max-width: none;
+    margin-left: 8rem;
+    margin-right: 2rem;
   }
 }
