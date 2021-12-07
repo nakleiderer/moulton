@@ -24,7 +24,7 @@ export let loader: LoaderFunction = async ({ request }) => {
 
 export let action: ActionFunction = async ({ request }) => {
   const response = await fetch(
-    "https://buttondown.email/api/emails/embed-subscribe/marbiano",
+    "https://buttondown.email/api/emails/embed-subscribe/moulton",
     {
       body: await formDataAsQueryString(request),
       method: "POST",
