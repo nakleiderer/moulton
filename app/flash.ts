@@ -4,6 +4,8 @@ import type { Session } from "@remix-run/server-runtime";
 const { getSession, commitSession } = createCookieSessionStorage({
   cookie: {
     name: "__session",
+    httpOnly: true,
+    secure: true,
   },
 });
 
