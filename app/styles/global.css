@@ -90,7 +90,7 @@ aside {
 
 h1 {
   font-family: var(--font-header);
-  font-size: 5rem;
+  font-size: 3.5rem;
   letter-spacing: -0.035em;
   margin: 0;
   line-height: 1;
@@ -100,7 +100,7 @@ h2 {
   display: flex;
   align-items: center;
   font-weight: 400;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   color: hsl(0 0% 100% / 0.4);
   margin: 0.75rem 0 0;
 }
@@ -146,8 +146,8 @@ h2 {
       border-box;
   border-radius: 6px;
   border: 1px solid transparent;
-  font-size: 1.2rem;
-  padding: 1.5rem;
+  font-size: 1rem;
+  padding: 1rem;
   color: var(--color-foreground);
   font-family: var(--font-body);
   display: block;
@@ -218,6 +218,8 @@ h2 {
   position: relative;
   width: 250px;
   height: 250px;
+  transform-origin: left top;
+  transform: scale(0.75);
 }
 
 .dot {
@@ -549,9 +551,26 @@ h2 {
     max-width: 85vw;
   }
 
+  .disco {
+    transform: scale(1);
+  }
+
+  h1 {
+    font-size: 5rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
   .subscribe-form {
     display: flex;
     align-items: stretch;
+  }
+
+  .subscribe-form input {
+    font-size: 1.2rem;
+    padding: 1.5rem;
   }
 
   .subscribe-form button {
