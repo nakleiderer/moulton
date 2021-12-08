@@ -14,12 +14,21 @@ export const meta: MetaFunction = () => {
   return {
     title: "Moulton",
     description: "A Remix Newsletter",
+    "og:title": "Moulton",
+    "og:description": "A Remix Newsletter",
+    "og:image": "https://readmoulton.com/og.png",
+    "og:url": "https://readmoulton.com",
+    "twitter:card": "summary_large_image",
   };
 };
 
 export let loader: LoaderFunction = async ({ request }) => {
   const [success, headers] = await getFlash(request, "success");
-  return json({ isSuccess: success }, { headers });
+  const query = new URLSearchParams(request.url.split("?")[1]);
+  return json(
+    { isSuccess: success, isConfirmed: query.has("confirmed") },
+    { headers }
+  );
 };
 
 export let action: ActionFunction = async ({ request }) => {
@@ -47,7 +56,7 @@ export let action: ActionFunction = async ({ request }) => {
 export default function Index() {
   const { formState, formRef } = useInteractiveForm();
   const inputRef = useFocusedInput();
-  const { isSuccess } = useLoaderData();
+  const { isConfirmed, isSuccess } = useLoaderData();
   const { isSubmitting, isError } = formState;
 
   return (
@@ -62,28 +71,38 @@ export default function Index() {
           </a>
           Newsletter
         </h2>
-        {isSuccess ? (
+        {isConfirmed ? (
           <div className="success">
-            Thanks for subscribing, check your inbox to confirm!
+            🎉 You’ve successfully subscribed. Latest issue coming next Monday!
           </div>
         ) : (
-          <Form method="post" className="subscribe-form" ref={formRef}>
-            <input
-              name="email"
-              type="email"
-              placeholder="Your email to receive Remix news every Monday"
-              required
-              ref={inputRef}
-            />
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className={isSubmitting ? "is-submitting" : ""}
-            >
-              <span>{isSubmitting ? "Subscribing" : "Subscribe"}</span>
-            </button>
-            {isError && <div className="error">Something wrong happened.</div>}
-          </Form>
+          <>
+            {isSuccess ? (
+              <div className="success">
+                Thanks for subscribing, check your inbox to confirm!
+              </div>
+            ) : (
+              <Form method="post" className="subscribe-form" ref={formRef}>
+                <input
+                  name="email"
+                  type="email"
+                  placeholder="Your email to receive Remix news every Monday"
+                  required
+                  ref={inputRef}
+                />
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className={isSubmitting ? "is-submitting" : ""}
+                >
+                  <span>{isSubmitting ? "Subscribing" : "Subscribe"}</span>
+                </button>
+                {isError && (
+                  <div className="error">Something wrong happened.</div>
+                )}
+              </Form>
+            )}
+          </>
         )}
       </main>
       <aside className="disco">
