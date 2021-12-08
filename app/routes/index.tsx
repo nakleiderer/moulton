@@ -8,6 +8,7 @@ import {
   json,
 } from "remix";
 import type { MetaFunction, ActionFunction, LoaderFunction } from "remix";
+import { differenceInDays, nextMonday } from "date-fns";
 import { setFlash, getFlash } from "~/flash";
 
 export const meta: MetaFunction = () => {
@@ -25,8 +26,15 @@ export const meta: MetaFunction = () => {
 export let loader: LoaderFunction = async ({ request }) => {
   const [success, headers] = await getFlash(request, "success");
   const query = new URLSearchParams(request.url.split("?")[1]);
+  const daysUntilNextIssue =
+    differenceInDays(nextMonday(new Date()), new Date()) % 7;
+
   return json(
-    { isSuccess: success, isConfirmed: query.has("confirmed") },
+    {
+      isSuccess: success,
+      isConfirmed: query.has("confirmed"),
+      daysUntilNextIssue,
+    },
     { headers }
   );
 };
@@ -44,8 +52,6 @@ export let action: ActionFunction = async ({ request }) => {
   );
 
   if (response.status >= 400) {
-    // deal with error
-    console.log("response", response);
     return { error: true };
   }
 
@@ -56,7 +62,7 @@ export let action: ActionFunction = async ({ request }) => {
 export default function Index() {
   const { formState, formRef } = useInteractiveForm();
   const inputRef = useFocusedInput();
-  const { isConfirmed, isSuccess } = useLoaderData();
+  const { isConfirmed, isSuccess, daysUntilNextIssue } = useLoaderData();
   const { isSubmitting, isError } = formState;
 
   return (
@@ -73,7 +79,12 @@ export default function Index() {
         </h2>
         {isConfirmed ? (
           <div className="success">
-            🎉 You’ve successfully subscribed. Latest issue coming next Monday!
+            🎉 You’ve successfully subscribed. Upcoming issue coming up{" "}
+            {daysUntilNextIssue > 0
+              ? `in ${daysUntilNextIssue} day${
+                  daysUntilNextIssue > 1 ? "s" : ""
+                }!`
+              : "today!"}
           </div>
         ) : (
           <>
