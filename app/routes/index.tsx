@@ -79,7 +79,7 @@ export default function Index() {
         </h2>
         {isConfirmed ? (
           <div className="success">
-            🎉 You’ve successfully subscribed. Upcoming issue coming up{" "}
+            🎉 You’ve successfully subscribed. Next issue coming up{" "}
             {daysUntilNextIssue > 0
               ? `in ${daysUntilNextIssue} day${
                   daysUntilNextIssue > 1 ? "s" : ""
